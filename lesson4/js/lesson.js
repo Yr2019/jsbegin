@@ -84,3 +84,21 @@ john.__proto__ = soldier;
 
 console.log(john);
 console.log(john.armor);
+
+
+// to String
+
+String(3432);
+console.log(typeof(String(4)));
+
+// to Number
+
+Number('3432');
+console.log(typeof (Number('543')));
+
+// to Boolean
+
+Boolean('3432');
+console.log(typeof (Boolean('543')));
+
+console.log(typeof ((!!'543')));
