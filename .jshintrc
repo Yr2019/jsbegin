@@ -3,7 +3,6 @@
 	"indent": 2,
 	"undef": true,
 	"quotmark": false,
-	"maxlen": 150,
 	"trailing": true,
 	"curly": true,
 	"strict": false,
@@ -12,3 +11,5 @@
 	"jquery": true,
 	"esversion": 6
 }
+
+// "maxlen": 150,

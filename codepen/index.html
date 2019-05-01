@@ -8,10 +8,29 @@
 </head>
 <body>
   <h1>Все Задания на "Codepen"</h1>
-  <h2>Простие Числа</h2>
-  <h2>1 Поезд</h2>
-  <h2>2 Написать функцию которая принимает массив чисел.</h2>
+  <h2>Задача №3</h2>
+  <p>Написать фукнцию 'isSomeTrue', которая принимает 2 параметра - 'array' и 'func'
+    'array' - массив
+    'func' - фильтрующая функция
+    Условия:
+    Если фильтрующая функция вернет 'true' хотя бы для одного элемента массива, то и сама 'isSomeTrue' вернет 'true'
+    Если фильтрующая функция вернет 'false' для ВСЕХ элементов массива, то и сама 'isSomeTrue' вернет 'false'
+    Нельзя использовать функции для работы с массивами, методы и циклы.
+
+    пример:
+    let numbers = [1, 2, 4, 5, 6, 7, 8],
+    someNumbers = [1, 2, 'Hello', 4, 5, 'world', 6, 7, 8],
+    noNumbers = ['здесь', 'нет', 'чисел'];
+
+    function isNumber(val) {
+    return typeof val === 'number';
+    }
+
+    console.log(isSomeTrue(allNumbers, isNumber)); //вернет true
+    console.log(isSomeTrue(someNumbers, isNumber)); //вернет true
+    console.log(isSomeTrue(noNumbers, isNumber)); //вернет false</p>
   <!-- <script src="js/second"></script> -->
-  <script src="js/logictwo.js"></script>
+  <!-- <script src="js/logictwo.js"></script> -->
+  <script src="js/logicthree.js"></script>
 </body>
 </html>
