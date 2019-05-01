@@ -12,6 +12,8 @@ let startBtn = document.getElementById('start'),
     incomeValue = document.getElementsByClassName('income-value')[0],
     monthSavingsValue = document.getElementsByClassName('monthsavings-value')[0],
     yearSavingsValue = document.getElementsByClassName('yearsavings-value')[0],
+    app = document.querySelector('.app'),
+    logo = document.querySelector('.logo'),
 
     optionalExpensesText = document.querySelectorAll('.optionalexpenses-item'),
     expensesText = document.querySelectorAll('.expenses-item'),
@@ -33,13 +35,20 @@ let money, time;
 expensesBtn.disabled = true;
 expensesBtn.style.background = "0";
 expensesBtn.style.color = "red";
+expensesBtn.style.border = "1px solid grey";
 
 optionalExpensesBtn.disabled = true;
 optionalExpensesBtn.style.background = "0";
 optionalExpensesBtn.style.color = "red";
+optionalExpensesBtn.style.border = "1px solid grey";
 countBtn.disabled = true;
 countBtn.style.background = "0";
 countBtn.style.color = "red";
+countBtn.style.border = "1px solid grey";
+
+app.style.backgroundImage = "url('img/bg.jpg')";
+app.style.height = "100vh";
+logo.style.background = "0";
 
 startBtn.addEventListener('click', function() {
   time = prompt('Введите дату в формате YYYY-MM-DD', '');
@@ -82,9 +91,11 @@ startBtn.addEventListener('click', function() {
       expensesBtn.disabled = false;
       expensesBtn.style.background = "";
       expensesBtn.style.color = "";
+      expensesBtn.style.border = "0";
       countBtn.disabled = false;
       countBtn.style.background = "";
       countBtn.style.color = "";
+      countBtn.style.border = "0";
     } else {
       i = i - 1;
     }
@@ -96,44 +107,59 @@ startBtn.addEventListener('click', function() {
 });
 
 [].forEach.call(optionalExpensesText, function (element) {
-      element.addEventListener("input", function () {
-        for (let i = 0; i < optionalExpensesText.length; i++) {  
-            let a = optionalExpensesText[i].value,
-                b = optionalExpensesText[++i].value,
-                c = optionalExpensesText[++i].value;
-              if (a == null || a == "") {
-                  a = '';
-                  appData.optionalExpenses[1] = a;
-              } else {
-                appData.optionalExpenses[1] = a;
-                optionalExpensesBtn.disabled = false;
-                optionalExpensesBtn.style.background = "";
-                optionalExpensesBtn.style.color = "";
-              }
-              if (b == null || b == "") {
-                b = '';
-                appData.optionalExpenses[2] = b;
-              } else {
-                appData.optionalExpenses[2] = b;
-                optionalExpensesBtn.disabled = false;
-                optionalExpensesBtn.style.background = "";
-                optionalExpensesBtn.style.color = "";
-              }
-              if (c == null || c == "") {
-                c = '';
-                appData.optionalExpenses[3] = c;
-              } else {
-                appData.optionalExpenses[3] = c;
-                optionalExpensesBtn.disabled = false;
-                optionalExpensesBtn.style.background = "";
-                optionalExpensesBtn.style.color = "";
-              }
-              let opt = a + ' ' + b + ' ' + c + ' ';
-              optionalExpensesBtn.addEventListener('click', function () {
-                optionalexpensesValue.textContent = opt;
-              });
-        }
-    });
+  element.addEventListener("input", function () {
+    for (let i = 0; i < optionalExpensesText.length; i++) {
+      let a = optionalExpensesText[i].value,
+        b = optionalExpensesText[++i].value,
+        c = optionalExpensesText[++i].value;
+      if (a == null || a == "") {
+        a = '';
+        appData.optionalExpenses[1] = a;
+      } else if (/[a-zA-Z]/gi.test(a) == 1) {
+        a = '';
+        appData.optionalExpenses[1] = a;
+        console.log("Ошибка : Только Русские Символы" + a);
+      } else {
+        appData.optionalExpenses[1] = a;
+        optionalExpensesBtn.disabled = false;
+        optionalExpensesBtn.style.background = "";
+        optionalExpensesBtn.style.color = "";
+        optionalExpensesBtn.style.border = "0";
+      }
+      if (b == null || b == "") {
+        b = '';
+        appData.optionalExpenses[2] = b;
+      } else if (/[a-zA-Z]/gi.test(b) == 1) {
+        b = '';
+        appData.optionalExpenses[1] = b;
+        console.log("Ошибка : Только Русские Символы" + b);
+      } else {
+        appData.optionalExpenses[2] = b;
+        optionalExpensesBtn.disabled = false;
+        optionalExpensesBtn.style.background = "";
+        optionalExpensesBtn.style.color = "";
+        optionalExpensesBtn.style.border = "0";
+      }
+      if (c == null || c == "") {
+        c = '';
+        appData.optionalExpenses[3] = c;
+      } else if (/[a-zA-Z]/gi.test(c) == 1) {
+        c = '';
+        appData.optionalExpenses[1] = c;
+        console.log("Ошибка : Только Русские Символы" + c);
+      } else {
+        appData.optionalExpenses[3] = c;
+        optionalExpensesBtn.disabled = false;
+        optionalExpensesBtn.style.background = "";
+        optionalExpensesBtn.style.color = "";
+        optionalExpensesBtn.style.border = "0";
+      }
+      let opt = a + ' ' + b + ' ' + c + ' ';
+      optionalExpensesBtn.addEventListener('click', function () {
+        optionalexpensesValue.textContent = opt;
+      });
+    }
+  });
 });
 
 countBtn.addEventListener('click', function() {
@@ -200,7 +226,6 @@ percentValue.addEventListener('input', function () {
   }
 });
 
-
 let appData = {
   budget: money,
   expenses: {},
@@ -245,11 +270,57 @@ expensesBtn.addEventListener('click', function() {
 
 
 
+/*
+if (a.search(/[А-яЁё]/) === -1) {
+  console.log('Нет русских букв');
+} else {
+  console.log('Русские буквы есть');
+}
+*/
 
 
 
 
-
+// [].forEach.call(optionalExpensesText, function (element) {
+//       element.addEventListener("input", function () {
+//         for (let i = 0; i < optionalExpensesText.length; i++) {  
+//             let a = optionalExpensesText[i].value,
+//                 b = optionalExpensesText[++i].value,
+//                 c = optionalExpensesText[++i].value;
+//               if (a == null || a == "") {
+//                   a = '';
+//                   appData.optionalExpenses[1] = a;
+//               } else {
+//                 appData.optionalExpenses[1] = a;
+//                 optionalExpensesBtn.disabled = false;
+//                 optionalExpensesBtn.style.background = "";
+//                 optionalExpensesBtn.style.color = "";
+//               }
+//               if (b == null || b == "") {
+//                 b = '';
+//                 appData.optionalExpenses[2] = b;
+//               } else {
+//                 appData.optionalExpenses[2] = b;
+//                 optionalExpensesBtn.disabled = false;
+//                 optionalExpensesBtn.style.background = "";
+//                 optionalExpensesBtn.style.color = "";
+//               }
+//               if (c == null || c == "") {
+//                 c = '';
+//                 appData.optionalExpenses[3] = c;
+//               } else {
+//                 appData.optionalExpenses[3] = c;
+//                 optionalExpensesBtn.disabled = false;
+//                 optionalExpensesBtn.style.background = "";
+//                 optionalExpensesBtn.style.color = "";
+//               }
+//               let opt = a + ' ' + b + ' ' + c + ' ';
+//               optionalExpensesBtn.addEventListener('click', function () {
+//                 optionalexpensesValue.textContent = opt;
+//               });
+//         }
+//     });
+// });
 
 
 
