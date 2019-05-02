@@ -1,0 +1,31 @@
+body {
+  box-sizing: border-box;
+}
+
+.timer__wrapper {
+  background: grey;
+  width: 400px;
+  height: 100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timer__box {
+  display: flex;
+  justify-content: space-between;
+}
+
+.timer__item {
+  background-color: #0324e093;
+  width: 60px;
+  height: 80px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: aqua;
+  border: 2px solid black;
+}
