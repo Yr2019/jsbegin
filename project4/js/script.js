@@ -43,7 +43,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
   // Timer
 
-  let deadline = '2019-05-04';
+  let deadline = '2019-05-25';
 
   function getTimeRemaining(endtime) {
     let t = Date.parse(endtime) - Date.parse(new Date()),
@@ -81,11 +81,57 @@ window.addEventListener('DOMContentLoaded', function() {
 
     function updateClock() {
       let t = getTimeRemaining(endtime);
-          hours.textContent = ("0" + t.hours).slice(-2);
+          hours.textContent = ("0" + t.hours).slice(-3);
           minutes.textContent = ("0" + t.minutes).slice(-2);
           seconds.textContent = ("0" + t.seconds).slice(-2);
     }    
   }
 
   setClock('timer', deadline);
+
+  // Modal
+
+  let more = document.querySelector('.more'),
+      overlay = document.querySelector('.overlay'),
+      close = document.querySelector('.popup-close'),
+      dbtn = document.querySelectorAll('.description-btn');
+  
+  // more.addEventListener('click', function() {
+  //   overlay.style.display = 'block';
+  //   this.classList.add('more-splash');
+  //   document.body.style.overflow = 'hidden';
+  // });
+
+  // close.addEventListener('click', function () {
+  //   overlay.style.display = 'none';
+  //   more.classList.remove('more-splash');
+  //   document.body.style.overflow = '';
+  // });
+
+  function click(a) {
+    if (a instanceof NodeList) {
+      a.forEach(function (item) {
+        item.addEventListener('click', function () {
+          overlay.style.display = 'block';
+          this.classList.add('more-splash');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+    } else {
+    a.addEventListener('click', function () {
+      overlay.style.display = 'block';
+      this.classList.add('more-splash');
+      document.body.style.overflow = 'hidden';
+    });
+    }
+    close.addEventListener('click', function () {
+      overlay.style.display = 'none';
+      more.classList.remove('more-splash');
+      document.body.style.overflow = '';
+    });
+  }
+  click(dbtn);
+  click(more);
+
 });
+
