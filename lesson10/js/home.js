@@ -19,7 +19,7 @@ class Options  {
         d.style.cssText = `height: ${this.height}px; 
             width: ${this.width}px; 
             background-color: ${this.backgroundColor}; 
-            font-size: ${this.fontSize}; 
+            font-size: ${this.fontSize}px; 
             text-align: ${this.textAlign}`;
   }
 }
