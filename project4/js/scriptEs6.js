@@ -104,4 +104,122 @@ window.addEventListener('DOMContentLoaded', function() {
     document.body.style.overflow = '';
   });
   }
+
+  // Connect Modal
+
+  let modalPhone = document.querySelector('.popup-form__input'),
+      btnModal = document.querySelector('.popup-form__btn'),
+      inputForm = document.querySelectorAll('#form input');
+
+      
+  var telLibrary = {
+    phone: []
+  };
+
+  var contactLibrary = {
+    mail: [],
+    phone: []
+  };
+
+  modalPhone.addEventListener('input', () => {
+    var phoneCheck = /^[+]?\d+$/;
+    let inp = modalPhone.value;
+    if (inp.match(phoneCheck) && inp.length < 13 && inp.length > 11) {
+      telLibrary.phone.push({number:inp});
+      var jsonModal = JSON.stringify(telLibrary);
+      console.log(jsonModal);
+    } else {
+      console.log("Нужно пройти проверку");
+    }
+  });
+
+ // Contact Form
+  inputForm[0].addEventListener('mouseleave', () => {
+    var mailCheck = /.+@.+\..+/i ;
+    let minp = inputForm[0].value;
+    if (minp.match(mailCheck) && minp.length < 30 ) {
+      contactLibrary.mail.push({ mail : minp});
+      var jsonContact = JSON.stringify(contactLibrary);
+      console.log(jsonContact);
+    }
+  });
+
+  inputForm[1].addEventListener('input', () => {
+    var phoneCheck2 = /^[+]?\d+$/;
+    let minp2 = inputForm[1].value;
+    if (minp2.match(phoneCheck2) && minp2.length < 13 && minp2.length > 11) {
+      contactLibrary.phone.push({ number : minp2});
+      var jsonContact = JSON.stringify(contactLibrary);
+      console.log(jsonContact);
+    } else {
+      console.log("Нужно пройти проверку");
+    }
+  });
+
 });
+
+
+
+
+
+
+
+// var saveData = (function () {
+//   var a = document.createElement("a");
+//   document.body.appendChild(a);
+//   a.style = "display: none";
+//   return function (data, fileName) {
+//     var json = JSON.stringify(data),
+//       blob = new Blob([json], {
+//         type: "octet/stream"
+//       }),
+//       url = window.URL.createObjectURL(blob);
+//     a.href = url;
+//     a.download = fileName;
+//     a.click();
+//     window.URL.revokeObjectURL(url);
+//   };
+// }());
+
+// var data = {
+//     x: 42,
+//     s: "hello, world",
+//     d: new Date()
+//   },
+//   fileName = "my-download.json";
+
+// saveData(data, fileName);
+
+// function WriteToFile(passForm) {
+
+//   let fso = CreateObject("Scripting.FileSystemObject");
+//   let s = fso.CreateTextFile("<your Path>/filename.txt", True);
+
+//   var firstName = document.getElementById('FirstName');
+//   var lastName = document.getElementById('lastName');
+
+//   s.writeline("First Name :" + FirstName);
+//   s.writeline("Last Name :" + lastName);
+
+//   s.writeline("-----------------------------");
+//   s.Close();
+// }
+
+
+//   Save into Json
+
+// var a = document.createElement("a"),
+//   fileName = "my-download.json";
+// document.body.appendChild(a);
+// a.style = "display: none";
+// telLibrary.push(inp);
+// var json = JSON.stringify(telLibrary),
+//   blob = new Blob([json], {
+//     type: "octet/stream"
+//   }),
+//   url = window.URL.createObjectURL(blob);
+// a.href = url;
+// a.download = fileName;
+// a.click();
+// window.URL.revokeObjectURL(url);
+// console.log(json);
