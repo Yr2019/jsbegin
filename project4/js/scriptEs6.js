@@ -110,8 +110,7 @@ window.addEventListener('DOMContentLoaded', function() {
   let modalPhone = document.querySelector('.popup-form__input'),
       btnModal = document.querySelector('.popup-form__btn'),
       inputForm = document.querySelectorAll('#form input');
-
-      
+  
   var telLibrary = {
     phone: []
   };
@@ -128,6 +127,15 @@ window.addEventListener('DOMContentLoaded', function() {
       telLibrary.phone.push({number:inp});
       var jsonModal = JSON.stringify(telLibrary);
       console.log(jsonModal);
+      var request = new XMLHttpRequest();
+      request.open("POST", "server.php");
+      request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+      request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200){
+          telLibrary.innerHTML = request.responseText;
+      }
+      };
+      request.send(jsonModal);
     } else {
       console.log("Нужно пройти проверку");
     }
@@ -141,6 +149,15 @@ window.addEventListener('DOMContentLoaded', function() {
       contactLibrary.mail.push({ mail : minp});
       var jsonContact = JSON.stringify(contactLibrary);
       console.log(jsonContact);
+      var request = new XMLHttpRequest();
+      request.open("POST", "server.php");
+      request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+      request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+          contactLibrary.innerHTML = request.responseText;
+        }
+      };
+      request.send(jsonContact);
     }
   });
 
@@ -151,6 +168,15 @@ window.addEventListener('DOMContentLoaded', function() {
       contactLibrary.phone.push({ number : minp2});
       var jsonContact = JSON.stringify(contactLibrary);
       console.log(jsonContact);
+      var request = new XMLHttpRequest();
+      request.open("POST", "server.php");
+      request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+      request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+          contactLibrary.innerHTML = request.responseText;
+        }
+      };
+      request.send(jsonContact);
     } else {
       console.log("Нужно пройти проверку");
     }
