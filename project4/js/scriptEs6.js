@@ -105,84 +105,232 @@ window.addEventListener('DOMContentLoaded', function() {
   });
   }
 
-  // Connect Modal
+    // Form
 
-  let modalPhone = document.querySelector('.popup-form__input'),
-      btnModal = document.querySelector('.popup-form__btn'),
-      inputForm = document.querySelectorAll('#form input');
-  
-  var telLibrary = {
-    phone: []
-  };
+    let message = {
+        loading: 'Загрузка...',
+        success: 'Спасибо! Скоро мы с вами свяжемся',
+        failure: 'Что-то пошло не так',
+        check: 'Проверка пройдена',
+        error: 'Нужно пройти проверку'
+    };
 
-  var contactLibrary = {
-    mail: [],
-    phone: []
-  };
+    let form = document.querySelector('.main-form'),
+        input = form.getElementsByTagName('input'),
+        statusMessage = document.createElement('div');
 
-  modalPhone.addEventListener('input', () => {
-    var phoneCheck = /^[+]?\d+$/;
-    let inp = modalPhone.value;
-    if (inp.match(phoneCheck) && inp.length < 13 && inp.length > 11) {
-      telLibrary.phone.push({number:inp});
-      var jsonModal = JSON.stringify(telLibrary);
-      console.log(jsonModal);
-      var request = new XMLHttpRequest();
-      request.open("POST", "server.php");
-      request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-      request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200){
-          telLibrary.innerHTML = request.responseText;
+        statusMessage.classList.add('status');
+
+    var isValid = false;
+
+    input[0].addEventListener('input', () => {
+      var phoneCheck = /^[+]?\d+$/;
+      let inp = input[0].value;
+      if (inp.match(phoneCheck) && inp.length < 13 && inp.length > 11) {
+        isValid = true;
+        statusMessage.innerHTML = message.check;
+      } else {
+        statusMessage.innerHTML = message.error;
       }
-      };
-      request.send(jsonModal);
-    } else {
-      console.log("Нужно пройти проверку");
-    }
+    });
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      form.appendChild(statusMessage);
+      if (isValid) {
+        console.log("submit");
+        let request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        //request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); // Отправка в обычном тектовом формате
+        request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+        let formData = new FormData(form);
+
+        let obj = {};
+        formData.forEach(function(value, key) {
+          obj[key] = value;
+        });  // Все данные c FormData помещаем в обект obj
+        let json = JSON.stringify(obj);
+        request.send(json);
+
+        request.addEventListener('readystatechange', function () {
+          if (request.readyState < 4) {
+            statusMessage.innerHTML = message.loading;
+          } else if (request.readyState === 4 && request.status == 200) {
+            statusMessage.innerHTML = message.success;
+          } else {
+            statusMessage.innerHTML = message.failure;
+          }
+        });
+          for (let i = 0; i < input.length; i++){
+            input[i].value = '';
+            isValid = false;
+          }
+      }
+    });
+
+    // Contact Form
+
+    let formContacts = document.getElementById('form'),
+        inputContacts = formContacts.getElementsByTagName('input'),
+        statusMessage2 = document.createElement('div');
+        statusMessage2.classList.add('status');
+        formContacts.style.position = 'relative';
+
+        inputContacts[0].addEventListener('input', () => {
+          statusMessage.style.cssText = `
+            font-size: 12px; 
+            color: white;
+            position: absolute;
+            top: 50px`;
+          formContacts.insertBefore(statusMessage, formContacts.children[1]);
+          var mailCheck = /.+@.+\..+/i ;
+          let minp = inputContacts[0].value;
+          if (minp.match(mailCheck) && minp.length < 30 ) {
+            isValid = true;
+            statusMessage.innerHTML = message.check;
+            inputContacts[0].name = 'mail';
+          } else {
+            statusMessage.innerHTML = message.error;
+          }
+        });
+
+        inputContacts[1].addEventListener('input', () => {
+            statusMessage2.style.cssText = `
+              font-size: 12px; 
+              color: white;
+              position: absolute;
+              top: 120px`;
+            formContacts.insertBefore(statusMessage2, formContacts.children[2]);
+            var phoneCheck2 = /^[+]?\d+$/;
+            let minp2 = inputContacts[1].value;
+            if (minp2.match(phoneCheck2) && minp2.length < 13 && minp2.length > 11) {
+              isValid = true;
+              statusMessage2.innerHTML = message.check;
+              inputContacts[1].name = 'number';
+            } else {
+              statusMessage2.innerHTML = message.error;
+            }
+          });
+
+    formContacts.addEventListener('submit', function(event) {
+      event.preventDefault();
+      formContacts.appendChild(statusMessage);
+      if (isValid) {
+        console.log("submit");
+        let request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        //request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded'); // Отправка в обычном тектовом формате
+        request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+
+        let formData2 = new FormData(formContacts);
+
+        let obj2 = {};
+        formData2.forEach(function(value, key) {
+          obj2[key] = value;
+        });  // Все данные c FormData помещаем в обект obj
+        let json2 = JSON.stringify(obj2);
+        request.send(json2);
+
+        request.addEventListener('readystatechange', function () {
+          if (request.readyState < 4) {
+            statusMessage.innerHTML = message.loading;
+          } else if (request.readyState === 4 && request.status == 200) {
+            statusMessage.innerHTML = message.success;
+          } else {
+            statusMessage.innerHTML = message.failure;
+          }
+        });
+          for (let i = 0; i < input.length; i++){
+            input[i].value = '';
+            isValid = false;
+          }
+      }
+    });
   });
 
- // Contact Form
-  inputForm[0].addEventListener('mouseleave', () => {
-    var mailCheck = /.+@.+\..+/i ;
-    let minp = inputForm[0].value;
-    if (minp.match(mailCheck) && minp.length < 30 ) {
-      contactLibrary.mail.push({ mail : minp});
-      var jsonContact = JSON.stringify(contactLibrary);
-      console.log(jsonContact);
-      var request = new XMLHttpRequest();
-      request.open("POST", "server.php");
-      request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-      request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-          contactLibrary.innerHTML = request.responseText;
-        }
-      };
-      request.send(jsonContact);
-    }
-  });
 
-  inputForm[1].addEventListener('input', () => {
-    var phoneCheck2 = /^[+]?\d+$/;
-    let minp2 = inputForm[1].value;
-    if (minp2.match(phoneCheck2) && minp2.length < 13 && minp2.length > 11) {
-      contactLibrary.phone.push({ number : minp2});
-      var jsonContact = JSON.stringify(contactLibrary);
-      console.log(jsonContact);
-      var request = new XMLHttpRequest();
-      request.open("POST", "server.php");
-      request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-      request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-          contactLibrary.innerHTML = request.responseText;
-        }
-      };
-      request.send(jsonContact);
-    } else {
-      console.log("Нужно пройти проверку");
-    }
-  });
 
-});
+
+
+//   // Connect Modal
+
+//   let modalPhone = document.querySelector('.popup-form__input'),
+//       btnModal = document.querySelector('.popup-form__btn'),
+//       inputForm = document.querySelectorAll('#form input');
+  
+//   var telLibrary = {
+//     phone: []
+//   };
+
+//   var contactLibrary = {
+//     mail: [],
+//     phone: []
+//   };
+
+//   modalPhone.addEventListener('input', () => {
+//     var phoneCheck = /^[+]?\d+$/;
+//     let inp = modalPhone.value;
+//     if (inp.match(phoneCheck) && inp.length < 13 && inp.length > 11) {
+//       telLibrary.phone.push({number:inp});
+//       var jsonModal = JSON.stringify(telLibrary);
+//       console.log(jsonModal);
+//       var request = new XMLHttpRequest();
+//       request.open("POST", "server.php");
+//       request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+//       request.onreadystatechange = function () {
+//         if (request.readyState == 4 && request.status == 200){
+//           telLibrary.innerHTML = request.responseText;
+//       }
+//       };
+//       request.send(jsonModal);
+//     } else {
+//       console.log("Нужно пройти проверку");
+//     }
+//   });
+
+//  // Contact Form
+//   inputForm[0].addEventListener('mouseleave', () => {
+//     var mailCheck = /.+@.+\..+/i ;
+//     let minp = inputForm[0].value;
+//     if (minp.match(mailCheck) && minp.length < 30 ) {
+//       contactLibrary.mail.push({ mail : minp});
+//       var jsonContact = JSON.stringify(contactLibrary);
+//       console.log(jsonContact);
+//       var request = new XMLHttpRequest();
+//       request.open("POST", "server.php");
+//       request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+//       request.onreadystatechange = function () {
+//         if (request.readyState == 4 && request.status == 200) {
+//           contactLibrary.innerHTML = request.responseText;
+//         }
+//       };
+//       request.send(jsonContact);
+//     }
+//   });
+
+//   inputForm[1].addEventListener('input', () => {
+//     var phoneCheck2 = /^[+]?\d+$/;
+//     let minp2 = inputForm[1].value;
+//     if (minp2.match(phoneCheck2) && minp2.length < 13 && minp2.length > 11) {
+//       contactLibrary.phone.push({ number : minp2});
+//       var jsonContact = JSON.stringify(contactLibrary);
+//       console.log(jsonContact);
+//       var request = new XMLHttpRequest();
+//       request.open("POST", "server.php");
+//       request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+//       request.onreadystatechange = function () {
+//         if (request.readyState == 4 && request.status == 200) {
+//           contactLibrary.innerHTML = request.responseText;
+//         }
+//       };
+//       request.send(jsonContact);
+//     } else {
+//       console.log("Нужно пройти проверку");
+//     }
+//   });
+
+
 
 
 
