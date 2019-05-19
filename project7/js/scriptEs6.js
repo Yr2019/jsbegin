@@ -2,6 +2,7 @@
 /*jshint -W014*/
 /*jshint -W083*/
 /*jshint -W093*/
+/*jshint -W004*/
 /*jshint expr:true*/
 
 window.addEventListener('DOMContentLoaded', function () {
@@ -117,146 +118,96 @@ window.addEventListener('DOMContentLoaded', function () {
   };
 
   let form = document.querySelector('.main-form'),
-    input = form.getElementsByTagName('input'),
-    formContacts = document.getElementById('form'),
-    inputContacts = formContacts.getElementsByTagName('input'),
-    statusMessage = document.createElement('div');
+      formContacts = document.getElementById('form'),
+      statusMessage = document.createElement('div');
+      statusMessage.classList.add('status');
+      statusMessage.style.cssText = `
+                font-size: 12px; 
+                color: white;`;
 
-  statusMessage.classList.add('status');
-
-  var isValid = false;
+  let isValid = false;
   let email;
   let tel;
-  let statusMessage2 = document.createElement('div');
-  statusMessage2.classList.add('status');
-  formContacts.style.position = 'relative';
+  let countInput;
 
-  function sendForm(elem) {
-    elem();
-  }
 
   function checkForm(elem) {
+    countInput = elem.getElementsByTagName('input').length;
+    elem.style.position = 'relative';
     for (let i = 0; i < elem.length; i++) {
       elem[i].addEventListener('input', function () {
         if (this.type === 'email') {
-          //formContacts.insertBefore(statusMessage, formContacts.children[1]);
+          elem.insertBefore(statusMessage, elem.children[1]);
           var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           if (re.test(String(this.value).toLowerCase()) === true) {
-            console.log(this.value);
-            console.log("Email Checked");
-            //statusMessage.innerHTML = message.check;
+            email = true;
+            statusMessage.innerHTML = message.check;
           } else {
             statusMessage.innerHTML = message.error;
             email = false;
           }
-        } else if (this.type === 'tel') {
-          
-          //formContacts.insertBefore(statusMessage2, formContacts.children[2]);
-          //statusMessage2.innerHTML = message.error;
-          //this.value = this.value.replace(/[^0-9| +]/g, '');
-          //this.value = this.value.replace(/^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/, ' '-+)`;
+          setTimeout(function () {
+            statusMessage.remove();
+          }, 1500);
+        } else if (this.type === 'tel') { 
+          elem.insertBefore(statusMessage, elem.children[2]);
+          statusMessage.innerHTML = message.error;
           if (this.value.replace(/[^0-9| +]/g, '')) {
-            console.log("Tel Chechekd");
-            console.log(this.value);
+            tel = true;
+            statusMessage.innerHTML = message.check;
           }
-          
         }
-        if (tel === true && email === undefined) {
-          console.log("checked only tel");
+        if (countInput === 1 && tel === true) {
+            isValid = true;
         }
         if (tel === true && email === true) {
-          console.log("checked form");
-        } else if (tel === true && email === undefined) {
-          console.log("checked only tel");
-        }
+            isValid = true;
+            let input = elem.getElementsByTagName('input');
+            input[0].name = 'mail';
+            input[1].name = 'tel';
+        } 
       });
     }
-      
   }
 
-  sendForm(function () {
-    checkForm(formContacts);
-  });
+  function sendForm(elem) {
+    checkForm(elem);
+    elem.addEventListener('submit', function (e) {
+      e.preventDefault();
+      elem.appendChild(statusMessage);
+      let input = elem.getElementsByTagName('input');
+      if (isValid === true) {
+      let request = new XMLHttpRequest();
+      request.open('POST', 'server.php');
+      request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+      let formData = new FormData(elem);
+      let obj = {};
+      formData.forEach(function (value, key) {
+        obj[key] = value;
+      });
+      let json = JSON.stringify(obj);
+      request.send(json);
+      request.onreadystatechange = function () {
+        if (request.readyState < 4) {
+          statusMessage.innerHTML = message.loading;
+        } else if (request.readyState === 4 && request.status == 200) {
+          statusMessage.style.cssText = `
+                font-size: 12px; 
+                color: white;`;
+          statusMessage.innerHTML = message.success;
+        } else {
+          statusMessage.innerHTML = message.failure;
+        }
+      };
+      for (let i = 0; i < input.length; i++) {
+        input[i].value = '';
+      }
+      }
+    });
+  }
 
-
-  // function checkForm(elem) {
-  //   //console.log(elem);
-  //   for (let i = 0; i < elem.length; i++) {
-  //     elem[i].addEventListener('input', function () {
-  //       if (this.type === 'email') {
-  //         console.log("Ура");
-  //         //console.log(this.value);
-  //         //formContacts.insertBefore(statusMessage, formContacts.children[1]);
-  //         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  //         if (re.test(String(this.value).toLowerCase()) === true) {
-  //           console.log(this.value);
-  //           statusMessage.innerHTML = message.check;
-  //           //return this.value;
-  //    dfd     } else {
-  //           statusMessage.innerHTML = message.error;
-  //         }
-  //       } else if (this.type === 'tel') {
-  //         //formContacts.insertBefore(statusMessage2, formContacts.children[2]);
-  //         statusMessage2.innerHTML = message.error;
-  //         this.value = this.value.replace(/[^0-9| +]/g, '');
-  //         isValid = true;
-  //         console.log(this.value);
-  //         return isValid;
-  //         //   if (this.value < 13 && this.value > 11 ) {
-  //         //     console.log(this.value);
-  //         //   statusMessage2.innerHTML = message.check;
-  //         // }
-  //       }
-  //     });
-  //   }
-  // }
-
-
-  // function sendForm(elem) {
-  //   elem.addEventListener('submit', function (e) {
-  //     e.preventDefault();
-  //     elem.appendChild(statusMessage);
-
-  //     let request = new XMLHttpRequest();
-  //     request.open('POST', 'server.php');
-  //     request.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-  //     let formData = new FormData(elem);
-  //     let obj = {};
-  //     formData.forEach(function (value, key) {
-  //       obj[key] = value;
-  //     });
-  //     let json = JSON.stringify(obj);
-  //     request.send(json);
-
-  //     request.onreadystatechange = function () {
-  //       if (request.readyState < 4) {
-  //         statusMessage.innerHTML = message.loading;
-  //       } else if (request.readyState === 4 && request.status == 200) {
-  //         statusMessage.style.cssText = `
-  //               font-size: 12px; 
-  //               color: white;`;
-  //         statusMessage.innerHTML = message.success;
-  //       } else {
-  //         statusMessage.innerHTML = message.failure;
-  //       }
-  //     };
-
-  //     for (let i = 0; i < input.length; i++) {
-  //       input[i].value = '';
-  //     }
-  //   });
-  // }
-
-  // sendForm(form);
-  // // sendForm(formContacts);
-
-
-
-
-
-
-
-
+  sendForm(formContacts);
+  sendForm(form);
 
 
 
