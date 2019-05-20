@@ -1,6 +1,6 @@
 // "use strict";
 
-window.onload = function (e) {
+
 //   const test = 50;
 
 //   const settings = {
@@ -105,14 +105,25 @@ window.onload = function (e) {
 //   };
 // }
 
+// let s = [20, 1, -1, 2, -2, 3, 3, 5, 5, 1, 2, 4, 20, 4, -1, -2, 5];
+// let p = [];
+// let count = '';
+// function findOdd(A) {
+//   for (let i = 0; i < A.length; i++) {
+//     for (let j = 1; j < A.length; j++) {
+//         if (A[i] == A[j]){
+//           count++;
+//         }
+//       }
+//     }
+//   }
 
-let items = document.querySelectorAll('.items .item');
+//   findOdd(s);
 
-for (let item of items){
-  console.log(item);
-  item.onclick = (e) => {
-    this.classList.toggle('item-active');
-  };
-}
-};
+  let box = document.querySelector('body > header > div > nav > ul > li:nth-child(1) > a');
 
+  let a = 0;
+  box.addEventListener('', function() {
+    a++;
+    console.log(a);
+  });
