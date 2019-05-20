@@ -117,7 +117,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   phoneInput.forEach(function (item) {
     item.oninput = function () {
-      this.value = this.value.clearInput(/[^\+\d]/g, '');
+      this.value = this.value.replace(/[^\+\d]/g, ' ');
     };
   });
 
