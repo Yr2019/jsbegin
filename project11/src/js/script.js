@@ -1,0 +1,24 @@
+/*jshint -W030*/
+/*jshint -W014*/
+/*jshint -W083*/
+/*jshint -W093*/
+/*jshint -W004*/
+/*jshint expr:true*/
+
+window.addEventListener('DOMContentLoaded', function () {
+  'use strict';
+  let calc = require('./parts/calc.js'),
+      form = require('./parts/form.js'),
+      slider = require('./parts/slider.js'),
+      tabs = require('./parts/tabs.js'),
+      timer = require('./parts/timer.js'),
+      modal = require('./parts/modal.js');
+
+      calc();
+      form();
+      slider();
+      tabs();
+      timer();
+      modal();
+
+  });
