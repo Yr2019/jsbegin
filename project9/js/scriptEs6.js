@@ -264,112 +264,165 @@ window.addEventListener('DOMContentLoaded', function () {
       }
     });
 
+
     //calculator
 
     let persons = document.querySelectorAll('.counter-block-input')[0],
-        restDays = document.querySelectorAll('.counter-block-input')[1],
-        place = document.getElementById('select'),
-        totalValue = document.getElementById('total'),
-        personsSum = 0,
-        daysSum = 0,
-        total = 0;
+      restDays = document.querySelectorAll('.counter-block-input')[1],
+      place = document.getElementById('select'),
+      totalValue = document.getElementById('total'),
+      personsSum = 0,
+      daysSum = 0,
+      total = 0;
+
+    totalValue.innerHTML = 0;
+
+    persons.onkeyup = function (input) {
+      return this.value = this.value.replace(/\D/g, '');
+    };
+    restDays.onkeyup = function (input) {
+      return this.value = this.value.replace(/\D/g, '');
+    };
 
     totalValue.innerHTML = 0;
 
     persons.addEventListener('change', function () {
-      let personsCheck = persons.value;
-          personsCheck.replace(/\d*\.?\d*/, ' ');
-          personsSum = personsCheck;
-          //persons.value = parseFloat(persons.value.replace(/^.*?(-?\d+(?:\.\d+)?).*?$/, '$1'));
-      if (restDays.value == '' || persons.value == '') {
-        totalValue.innerHTML = 0;
-      } else {
-        total = (daysSum + personsSum) * 4000;
-        totalValue.innerHTML = total;
-      }
-    });
-
-    restDays.addEventListener('change', function () {
-      let  daysCheck = restDays.value;
-            daysCheck.replace(/\d*\.?\d*/, ' ');
-            daysSum = daysCheck;
-    // restDays.value = parseFloat(restDays.value.replace(/^.*?(-?\d+(?:\.\d+)?).*?$/, '$1'));
-      if (persons.value == '' || restDays.value == '') {
-        totalValue.innerHTML = 0;
-      } else {
-        total = (daysSum + personsSum) * 4000;
-        totalValue.innerHTML = total;
-      }
-    });
-
-    // Второй вариант 
-    // persons.addEventListener('input', function () {
-    //   personsSum = +this.value;
-    //   persons.value = parseFloat(persons.value.replace(/^.*?(-?\d+(?:\.\d+)?).*?$/, '$1'));
-    //   total = (daysSum + personsSum) * 4000;
-
-    //   if (restDays.value == '' || persons.value == '') {
-    //     totalValue.innerHTML = 0;
-    //   } else {
-    //     totalValue.innerHTML = total;
-    //   }
-    // });
-
-    // restDays.addEventListener('input', function () {
-    //   daysSum = +this.value;
-    //   restDays.value = parseFloat(restDays.value.replace(/^.*?(-?\d+(?:\.\d+)?).*?$/, '$1'));
-    //   total = (daysSum + personsSum) * 4000;
-
-    //   if (persons.value == '' || restDays.value == '') {
-    //     totalValue.innerHTML = 0;
-    //   } else {
-    //     totalValue.innerHTML = total;
-    //   }
-    // });
-
-    place.addEventListener('change', function () {
+      personsSum = +this.value;
+      total = (daysSum + personsSum) * 4000;
       if (restDays.value == '' || persons.value == '') {
         totalValue.innerHTML = 0;
       } else {
         let a = total;
-        totalValue.innerHTML = a * this.options[this.selectedIndex].value;
+        totalValue.innerHTML = a * place.options[place.selectedIndex].value;
       }
     });
 
+    restDays.addEventListener('change', function () {
+      daysSum = +this.value;
+      total = (daysSum + personsSum) * 4000;
+      if (persons.value == '' || restDays.value == '') {
+        totalValue.innerHTML = 0;
+      } else {
+        let a = total;
+        totalValue.innerHTML = a * place.options[place.selectedIndex].value;
+      }
+    });
+    place.addEventListener('change', function () {
+    if (restDays.value == '' || persons.value == '') {
+      totalValue.innerHTML = 0;
+    } else {
+      let a = total;
+      totalValue.innerHTML = a * this.options[this.selectedIndex].value;
+    }
+    });
+    
+  });
+//     //calculator
 
-});
+//     let persons = document.querySelectorAll('.counter-block-input')[0],
+//         restDays = document.querySelectorAll('.counter-block-input')[1],
+//         place = document.getElementById('select'),
+//         totalValue = document.getElementById('total'),
+//         personsSum = 0,
+//         daysSum = 0,
+//         total = 0;
 
-// persons.addEventListener('change', function () {
-//   let personsCheck = persons.value;
-//   personsCheck.replace(/\d*\.?\d*/, ' ');
-//   if (personsCheck == '' || daysSum == '') {
 //     totalValue.innerHTML = 0;
-//   } else {
-//     personsSum = +this.value;
-//     total = (daysSum + personsSum) * 4000;
-//     if (restDays.value == '') {
-//       totalValue.innerHTML = 0;
-//     } else {
-//       totalValue.innerHTML = total;
-//     }
-//   }
+
+//     persons.addEventListener('change', function () {
+//       let personsCheck = persons.value;
+//           personsCheck.replace(/\d*\.?\d*/, ' ');
+//           personsSum = personsCheck;
+//           //persons.value = parseFloat(persons.value.replace(/^.*?(-?\d+(?:\.\d+)?).*?$/, '$1'));
+//       if (restDays.value == '' || persons.value == '') {
+//         totalValue.innerHTML = 0;
+//       } else {
+//         total = (daysSum + personsSum) * 4000;
+//         totalValue.innerHTML = total;
+//       }
+//     });
+
+//     restDays.addEventListener('change', function () {
+//       let  daysCheck = restDays.value;
+//             daysCheck.replace(/\d*\.?\d*/, ' ');
+//             daysSum = daysCheck;
+//     // restDays.value = parseFloat(restDays.value.replace(/^.*?(-?\d+(?:\.\d+)?).*?$/, '$1'));
+//       if (persons.value == '' || restDays.value == '') {
+//         totalValue.innerHTML = 0;
+//       } else {
+//         total = (daysSum + personsSum) * 4000;
+//         totalValue.innerHTML = total;
+//       }
+//     });
+
+//     // Второй вариант 
+//     // persons.addEventListener('input', function () {
+//     //   personsSum = +this.value;
+//     //   persons.value = parseFloat(persons.value.replace(/^.*?(-?\d+(?:\.\d+)?).*?$/, '$1'));
+//     //   total = (daysSum + personsSum) * 4000;
+
+//     //   if (restDays.value == '' || persons.value == '') {
+//     //     totalValue.innerHTML = 0;
+//     //   } else {
+//     //     totalValue.innerHTML = total;
+//     //   }
+//     // });
+
+//     // restDays.addEventListener('input', function () {
+//     //   daysSum = +this.value;
+//     //   restDays.value = parseFloat(restDays.value.replace(/^.*?(-?\d+(?:\.\d+)?).*?$/, '$1'));
+//     //   total = (daysSum + personsSum) * 4000;
+
+//     //   if (persons.value == '' || restDays.value == '') {
+//     //     totalValue.innerHTML = 0;
+//     //   } else {
+//     //     totalValue.innerHTML = total;
+//     //   }
+//     // });
+
+//     place.addEventListener('change', function () {
+//       if (restDays.value == '' || persons.value == '') {
+//         totalValue.innerHTML = 0;
+//       } else {
+//         let a = total;
+//         totalValue.innerHTML = a * this.options[this.selectedIndex].value;
+//       }
+//     });
+
+
 // });
 
-// restDays.addEventListener('change', function () {
-//   let daysCheck = restDays.value;
-//     daysCheck.replace(/\d*\.?\d*/, ' ');
-//   if (daysCheck == '' || daysSum == '') {
-//     totalValue.innerHTML = 0;
-//   } else {
-//     personsSum = +this.value;
-//     total = (daysSum + personsSum) * 4000;
-//     if (restDays.value == '') {
-//       totalValue.innerHTML = 0;
-//     } else {
-//       totalValue.innerHTML = total;
-//     }
-//   }
-// });
+// // persons.addEventListener('change', function () {
+// //   let personsCheck = persons.value;
+// //   personsCheck.replace(/\d*\.?\d*/, ' ');
+// //   if (personsCheck == '' || daysSum == '') {
+// //     totalValue.innerHTML = 0;
+// //   } else {
+// //     personsSum = +this.value;
+// //     total = (daysSum + personsSum) * 4000;
+// //     if (restDays.value == '') {
+// //       totalValue.innerHTML = 0;
+// //     } else {
+// //       totalValue.innerHTML = total;
+// //     }
+// //   }
+// // });
+
+// // restDays.addEventListener('change', function () {
+// //   let daysCheck = restDays.value;
+// //     daysCheck.replace(/\d*\.?\d*/, ' ');
+// //   if (daysCheck == '' || daysSum == '') {
+// //     totalValue.innerHTML = 0;
+// //   } else {
+// //     personsSum = +this.value;
+// //     total = (daysSum + personsSum) * 4000;
+// //     if (restDays.value == '') {
+// //       totalValue.innerHTML = 0;
+// //     } else {
+// //       totalValue.innerHTML = total;
+// //     }
+// //   }
+// // });
 
 
 
