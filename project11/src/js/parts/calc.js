@@ -10,10 +10,10 @@ function calc() {
   totalValue.innerHTML = 0;
 
   persons.onkeyup = function (input) {
-    return this.value = this.value.replace(/\D/g, '');
+    return this.value = this.value.replace(/[\D]|^0/g, '');
   };
   restDays.onkeyup = function (input) {
-    return this.value = this.value.replace(/\D/g, '');
+    return this.value = this.value.replace(/[\D]|^0/g, '');
   };
 
   totalValue.innerHTML = 0;

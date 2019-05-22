@@ -105,10 +105,10 @@ function calc() {
   totalValue.innerHTML = 0;
 
   persons.onkeyup = function (input) {
-    return this.value = this.value.replace(/\D/g, '');
+    return this.value = this.value.replace(/[\D]|^0/g, '');
   };
   restDays.onkeyup = function (input) {
-    return this.value = this.value.replace(/\D/g, '');
+    return this.value = this.value.replace(/[\D]|^0/g, '');
   };
 
   totalValue.innerHTML = 0;
@@ -184,6 +184,7 @@ function form() {
     for (let i = 0; i < elem.length; i++) {
       elem[i].addEventListener('input', function () {
         if (this.type === 'email') {
+          this.name = 'mail';
           elem.insertBefore(statusMessage, elem.children[1]);
           var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           if (re.test(String(this.value).toLowerCase()) === true) {
@@ -197,11 +198,15 @@ function form() {
             statusMessage.remove();
           }, 1500);
         } else if (this.type === 'tel') {
+          if (this.name == 'phone') { } else { this.name = 'tel'; }
           elem.insertBefore(statusMessage, elem.children[2]);
           statusMessage.innerHTML = message.error;
-          if (this.value.replace(/[^0-9| +]/g, '')) {
+          this.value = '+' + this.value.replace(/[^\d]/g, '').slice(0, 11);
+          if (this.value.length === 12) {
             tel = true;
             statusMessage.innerHTML = message.check;
+          } else {
+            statusMessage.innerHTML = message.error;
           }
         }
         if (countInput === 1 && tel === true) {
@@ -209,9 +214,6 @@ function form() {
         }
         if (tel === true && email === true) {
           isValid = true;
-          let input = elem.getElementsByTagName('input');
-          input[0].name = 'mail';
-          input[1].name = 'tel';
         }
       });
     }
